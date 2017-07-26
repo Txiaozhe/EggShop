@@ -5,6 +5,13 @@ module.exports = app => {
     * index() {
       this.ctx.body = 'hi, egg';
     }
+
+    * home() {
+      var {ctx} = this;
+      ctx.body = {
+        name: ctx.request.body.name
+      }
+    }
   }
   return HomeController;
 };
