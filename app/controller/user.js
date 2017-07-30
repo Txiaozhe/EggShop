@@ -87,6 +87,21 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrInvalidParams);
       }
     }
+
+    * deleteUser() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+      const res = yield ctx.service.user.deleteUser(id);
+      if (res === 1) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrDelete);
+      }
+    }
   }
   return UserController;
 };

@@ -75,6 +75,17 @@ function* modify(app, tableName, payload) {
   return res;
 }
 
+function* deleteOne(app, tableName, payload) {
+  let res;
+  try {
+    res = yield app.mysql.delete(tableName, payload);
+  } catch (e) {
+    res = e;
+    throw e;
+  }
+  return res;
+}
+
 module.exports = {
   USER_TABLE_NAME,
 
@@ -82,4 +93,5 @@ module.exports = {
   getOne,
   getAll,
   modify,
+  deleteOne,
 };

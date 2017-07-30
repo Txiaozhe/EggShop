@@ -29,9 +29,8 @@
 
 'use strict';
 
-const { USER_TABLE_NAME, create, getOne, getAll, modify } = require('../utils/mysqlKit');
+const { USER_TABLE_NAME, create, getOne, getAll, modify, deleteOne } = require('../utils/mysqlKit');
 const INSERT_SUCCESS = 1;
-const MODIFY_SUCCESS = 1;
 
 module.exports = app => {
   class User extends app.Service {
@@ -58,6 +57,11 @@ module.exports = app => {
         password: newp,
       });
 
+      return res.affectedRows;
+    }
+
+    * deleteUser(id) {
+      const res = yield deleteOne(app, USER_TABLE_NAME, { id });
       return res.affectedRows;
     }
   }
