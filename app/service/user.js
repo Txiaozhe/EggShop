@@ -29,14 +29,22 @@
 
 'use strict';
 
-const { create } = require('../utils/mysqlKit');
+const { USER_TABLE_NAME, create, getOne, getAll } = require('../utils/mysqlKit');
 const INSERT_SUCCESS = 1;
 
 module.exports = app => {
   class User extends app.Service {
     * register(username, mobile, password) {
-      const result = yield create(app, { username, mobile, password });
+      const result = yield create(app, USER_TABLE_NAME, { username, mobile, password });
       return result.affectedRows === INSERT_SUCCESS;
+    }
+
+    * searchUserById(id) {
+      return yield getOne(app, USER_TABLE_NAME, { id });
+    }
+
+    * getAllUser() {
+      return yield getAll(app, USER_TABLE_NAME);
     }
   }
   return User;

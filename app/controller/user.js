@@ -47,6 +47,31 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrMysql, {});
       }
     }
+
+    * searchUserById() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams, 'invalid params');
+        return;
+      }
+      const res = yield ctx.service.user.searchUserById(id);
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed, res);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysqlfound, 'no such user');
+      }
+    }
+
+    * getAllUser() {
+      const { ctx } = this;
+      const res = yield ctx.service.user.getAllUser();
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed, res);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysqlfound, 'no such user');
+      }
+    }
   }
   return UserController;
 };

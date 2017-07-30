@@ -31,10 +31,32 @@
 
 const USER_TABLE_NAME = 'user';
 
-function* create(app, payload) {
+function* create(app, tableName, payload) {
   let res;
   try {
-    res = yield app.mysql.insert(USER_TABLE_NAME, payload);
+    res = yield app.mysql.insert(tableName, payload);
+  } catch (e) {
+    res = e;
+    throw e;
+  }
+  return res;
+}
+
+function* getOne(app, tableName, payload) {
+  let res;
+  try {
+    res = yield app.mysql.get(tableName, payload);
+  } catch (e) {
+    res = e;
+    throw e;
+  }
+  return res;
+}
+
+function* getAll(app, tableName) {
+  let res;
+  try {
+    res = yield app.mysql.select(tableName);
   } catch (e) {
     res = e;
     throw e;
@@ -43,5 +65,9 @@ function* create(app, payload) {
 }
 
 module.exports = {
+  USER_TABLE_NAME,
+
   create,
+  getOne,
+  getAll,
 };

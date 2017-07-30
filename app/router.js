@@ -36,4 +36,6 @@ module.exports = app => {
 
   // user
   app.post('/user/register', 'user.register');
+  app.post('/user/user', 'user.searchUserById');
+  app.get('/user/all', 'user.getAllUser');
 };
