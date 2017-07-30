@@ -38,4 +38,5 @@ module.exports = app => {
   app.post('/user/register', 'user.register');
   app.post('/user/user', 'user.searchUserById');
   app.get('/user/all', 'user.getAllUser');
+  app.post('/user/password/modify', 'user.modifyPassword');
 };

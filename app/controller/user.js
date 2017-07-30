@@ -37,14 +37,14 @@ module.exports = app => {
       const { ctx } = this;
       const { username, mobile, password } = ctx.request.body;
       if (!checkParams(username, mobile, password)) {
-        ctx.body = newErrorWithMessage(error.ErrInvalidParams, 'invalid params');
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
         return;
       }
       const res = yield ctx.service.user.register(username, mobile, password);
       if (res) {
-        ctx.body = newErrorWithMessage(error.ErrSucceed, {});
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
-        ctx.body = newErrorWithMessage(error.ErrMysql, {});
+        ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
 
@@ -52,14 +52,14 @@ module.exports = app => {
       const { ctx } = this;
       const { id } = ctx.request.body;
       if (!checkParams(id)) {
-        ctx.body = newErrorWithMessage(error.ErrInvalidParams, 'invalid params');
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
         return;
       }
       const res = yield ctx.service.user.searchUserById(id);
       if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed, res);
       } else {
-        ctx.body = newErrorWithMessage(error.ErrMysqlfound, 'no such user');
+        ctx.body = newErrorWithMessage(error.ErrMysqlfound);
       }
     }
 
@@ -69,7 +69,22 @@ module.exports = app => {
       if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed, res);
       } else {
-        ctx.body = newErrorWithMessage(error.ErrMysqlfound, 'no such user');
+        ctx.body = newErrorWithMessage(error.ErrNotFound);
+      }
+    }
+
+    * modifyPassword() {
+      const { ctx } = this;
+      const { id, code, oldp, newp } = ctx.request.body;
+      if (!checkParams(id, code, oldp, newp)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+      const res = yield ctx.service.user.modifyPassword(id, code, oldp, newp);
+      if (res === 1) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
       }
     }
   }

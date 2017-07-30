@@ -64,10 +64,22 @@ function* getAll(app, tableName) {
   return res;
 }
 
+function* modify(app, tableName, payload) {
+  let res;
+  try {
+    res = yield app.mysql.update(tableName, payload);
+  } catch (e) {
+    res = e;
+    throw e;
+  }
+  return res;
+}
+
 module.exports = {
   USER_TABLE_NAME,
 
   create,
   getOne,
   getAll,
+  modify,
 };

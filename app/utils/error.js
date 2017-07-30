@@ -30,39 +30,56 @@
 'use strict';
 
 const error = {
-  ErrSucceed: 0,
-  ErrInvalidParams: 0x1,
-  ErrMysql: 0x2,
-  ErrDelete: 0x3, // 用户登出错误
-  ErrMysqlfound: 0x4,
-  ErrNameFormat: 0x5,
-  ErrGetsess: 0x6,
-  ErrInvalidOrdersStatus: 0x7,
-  ErrOrdersNotFound: 0x8,
-  NoOrder: 0x11,
-  ErrCategoriesNotFound: 0x9,
-  ErrNotFound: 0xa,
-  ErrAccess: 0xb,
-  ErrInvalidPhone: 0xc,
-  ErrInput: 0xd,
-  ErrBind: 0xe,
-  ErrAlterAddressToNotDefault: 0x10,
-  ErrAddressNotFound: 0x11,
-  ErrInformation: 0xf,
+  ErrSucceed: {
+    code: 0x0,
+    msg: 'success',
+  },
+  ErrInvalidParams: {
+    code: 0x1,
+    msg: 'invalid params',
+  },
+  ErrMysql: {
+    code: 0x2,
+    msg: 'mysql error',
+  },
+  ErrDelete: {
+    code: 0x3,
+    msg: 'have be deleted',
+  },
+  ErrMysqlfound: {
+    code: 0x4,
+    msg: 'mysql ont found',
+  },
+  ErrNameFormat: {
+    code: 0x5,
+    msg: 'name format error',
+  },
 
   // 需要登录
-  ErrLoginRequired: 0x800,
-  ErrPermissionDenied: 0x801,
+  ErrLoginRequired: {
+    code: 0x800,
+    msg: 'must login',
+  },
+  ErrPermissionDenied: {
+    code: 0x801,
+    msg: 'no such permission',
+  },
 
   // 严重错误
-  ErrNoConnection: 0x1000,
-  ErrDBOperationFailed: 0x1001,
+  ErrNoConnection: {
+    code: 0x1000,
+    msg: 'connection error',
+  },
+  ErrDBOperationFailed: {
+    code: 0x1001,
+    msg: 'db error',
+  },
 };
 
-function newErrorWithMessage(code, msg) {
+function newErrorWithMessage(err, msg) {
   return {
-    status: code,
-    msg,
+    status: err.code,
+    msg: msg ? msg : err.msg,
   };
 }
 

@@ -29,8 +29,9 @@
 
 'use strict';
 
-const { USER_TABLE_NAME, create, getOne, getAll } = require('../utils/mysqlKit');
+const { USER_TABLE_NAME, create, getOne, getAll, modify } = require('../utils/mysqlKit');
 const INSERT_SUCCESS = 1;
+const MODIFY_SUCCESS = 1;
 
 module.exports = app => {
   class User extends app.Service {
@@ -45,6 +46,19 @@ module.exports = app => {
 
     * getAllUser() {
       return yield getAll(app, USER_TABLE_NAME);
+    }
+
+    * modifyPassword(id, code, oldp, newp) {
+      const sqlOldPass = yield getOne(app, USER_TABLE_NAME, { id });
+      if (sqlOldPass.password !== oldp) {
+        return 'password or code err';
+      }
+      const res = yield modify(app, USER_TABLE_NAME, {
+        id,
+        password: newp,
+      });
+
+      return res.affectedRows;
     }
   }
   return User;
