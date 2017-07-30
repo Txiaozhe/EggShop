@@ -29,13 +29,17 @@
 
 'use strict';
 
-const { error, newErrorWithMessage } = require('../utils/error');
+const { error, newErrorWithMessage, checkParams } = require('../utils/error');
 
 module.exports = app => {
   class UserController extends app.Controller {
     * register() {
       const { ctx } = this;
       const { username, mobile, password } = ctx.request.body;
+      if (!checkParams(username, mobile, password)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams, 'invalid params');
+        return;
+      }
       const res = yield ctx.service.user.register(username, mobile, password);
       if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed, {});

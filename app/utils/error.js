@@ -66,7 +66,17 @@ function newErrorWithMessage(code, msg) {
   };
 }
 
+function checkParams() {
+  for (let i = 0; i < arguments.length; i++) {
+    if (!arguments[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
 module.exports = {
   error,
   newErrorWithMessage,
+  checkParams,
 };
