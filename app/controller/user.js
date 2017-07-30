@@ -30,17 +30,12 @@
 'use strict';
 
 module.exports = app => {
-  class HomeController extends app.Controller {
-    * index() {
-      this.ctx.body = 'hi, egg';
-    }
-
-    * home() {
+  class UserController extends app.Controller {
+    * register() {
       const { ctx } = this;
-      ctx.body = {
-        name: ctx.request.body.name,
-      };
+      const { username, mobile, password } = ctx.request.body;
+      ctx.body = yield ctx.service.user.register(username, mobile, password);
     }
   }
-  return HomeController;
+  return UserController;
 };

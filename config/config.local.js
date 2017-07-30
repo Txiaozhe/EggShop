@@ -29,18 +29,14 @@
 
 'use strict';
 
-module.exports = app => {
-  class HomeController extends app.Controller {
-    * index() {
-      this.ctx.body = 'hi, egg';
-    }
-
-    * home() {
-      const { ctx } = this;
-      ctx.body = {
-        name: ctx.request.body.name,
-      };
-    }
-  }
-  return HomeController;
+exports.mysql = {
+  client: {
+    host: '10.0.0.164',
+    port: '3306',
+    user: 'root',
+    password: '123456',
+    database: 'eggshop',
+  },
+  app: true,
+  agent: false,
 };

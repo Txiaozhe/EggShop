@@ -30,17 +30,12 @@
 'use strict';
 
 module.exports = app => {
-  class HomeController extends app.Controller {
-    * index() {
-      this.ctx.body = 'hi, egg';
-    }
-
-    * home() {
-      const { ctx } = this;
-      ctx.body = {
-        name: ctx.request.body.name,
-      };
+  class User extends app.Service {
+    * register(username, mobile, password) {
+      const result = yield this.app.mysql.insert('user', { username, mobile, password });
+      // 判断插入成功
+      return result.affectedRows === 1;
     }
   }
-  return HomeController;
+  return User;
 };
