@@ -29,16 +29,29 @@
 
 'use strict';
 
-const { tables, create, getOne, getAll, modify, deleteOne } = require('../utils/mysqlKit');
+const {
+  tables,
+  getOne,
+  getAll,
+  modify,
+  deleteOne,
+  getConn,
+} = require('../utils/mysqlKit');
 
 module.exports = app => {
   class User extends app.Service {
     * register(nickname, mobile, password) {
-      // user 表建立用户
-      const userResult = yield create(app, tables.user, { nickname, mobile, password });
-      // userinfo 表建立用户
-      const infoResult = yield create(app, tables.userInfo, { nickname, mobile });
-      return infoResult.affectedRows === 1 && userResult.affectedRows === infoResult.affectedRows;
+      const conn = yield getConn(app);
+      try {
+        yield conn.insert(tables.user, { nickname, mobile, password });
+        yield conn.insert(tables.userInfo, { nickname, mobile });
+        yield conn.commit();
+      } catch (e) {
+        yield conn.rollback();
+        return false;
+      }
+
+      return true;
     }
 
     * searchUserById(id) {

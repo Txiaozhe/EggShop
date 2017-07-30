@@ -89,6 +89,10 @@ function* deleteOne(app, tableName, payload) {
   return res;
 }
 
+function* getConn(app) {
+  return yield app.mysql.beginTransaction();
+}
+
 module.exports = {
   tables,
 
@@ -97,4 +101,6 @@ module.exports = {
   getAll,
   modify,
   deleteOne,
+
+  getConn,
 };
