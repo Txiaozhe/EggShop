@@ -40,4 +40,5 @@ module.exports = app => {
   app.get('/user/all', 'user.getAllUser');
   app.post('/user/password/modify', 'user.modifyPassword');
   app.post('/user/delete', 'user.deleteUser');
+  app.post('/user/login', 'user.login');
 };

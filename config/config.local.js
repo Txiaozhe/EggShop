@@ -31,7 +31,7 @@
 
 exports.mysql = {
   client: {
-    host: '10.0.0.164',
+    host: '172.20.10.2',
     port: '3306',
     user: 'root',
     password: '123456',
@@ -39,4 +39,10 @@ exports.mysql = {
   },
   app: true,
   agent: false,
+};
+
+exports.jwt = {
+  secret: 'egg_shop__1501055229355_649',
+  enable: true,
+  match: '/user/token',
 };

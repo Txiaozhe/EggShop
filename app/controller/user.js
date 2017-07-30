@@ -30,6 +30,7 @@
 'use strict';
 
 const { error, newErrorWithMessage, checkParams } = require('../utils/error');
+const { getToken } = require('../utils/jwt');
 
 module.exports = app => {
   class UserController extends app.Controller {
@@ -100,6 +101,21 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
         ctx.body = newErrorWithMessage(error.ErrDelete);
+      }
+    }
+
+    * login() {
+      const { ctx } = this;
+      const { mobile, password } = ctx.request.body;
+      if (!checkParams(mobile, password)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+      const res = yield ctx.service.user.login(mobile, password);
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed, getToken(app, mobile));
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
       }
     }
   }

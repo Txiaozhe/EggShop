@@ -79,6 +79,11 @@ module.exports = app => {
       const res = yield deleteOne(app, tables.user, { id });
       return res.affectedRows;
     }
+
+    * login(mobile, password) {
+      const res = yield getOne(app, tables.user, { mobile });
+      return res.password === password;
+    }
   }
   return User;
 };
