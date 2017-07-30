@@ -29,12 +29,14 @@
 
 'use strict';
 
+const { create } = require('../utils/mysqlKit');
+const INSERT_SUCCESS = 1;
+
 module.exports = app => {
   class User extends app.Service {
     * register(username, mobile, password) {
-      const result = yield this.app.mysql.insert('user', { username, mobile, password });
-      // 判断插入成功
-      return result.affectedRows === 1;
+      const result = yield create(app, { username, mobile, password });
+      return result.affectedRows === INSERT_SUCCESS;
     }
   }
   return User;

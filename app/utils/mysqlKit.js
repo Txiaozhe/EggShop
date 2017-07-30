@@ -4,7 +4,7 @@
  * Copyright (c) 2017 SmartestEE Co,Ltd..
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the 'Software'), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -13,7 +13,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -24,25 +24,24 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/07/30        Tang Xiaoji
  */
 
 'use strict';
 
-const { error, newErrorWithMessage } = require('../utils/error');
+const USER_TABLE_NAME = 'user';
 
-module.exports = app => {
-  class UserController extends app.Controller {
-    * register() {
-      const { ctx } = this;
-      const { username, mobile, password } = ctx.request.body;
-      const res = yield ctx.service.user.register(username, mobile, password);
-      if (res) {
-        ctx.body = newErrorWithMessage(error.ErrSucceed, {});
-      } else {
-        ctx.body = newErrorWithMessage(error.ErrMysql, {});
-      }
-    }
+function* create(app, payload) {
+  let res;
+  try {
+    res = yield app.mysql.insert(USER_TABLE_NAME, payload);
+  } catch (e) {
+    res = e;
+    throw e;
   }
-  return UserController;
+  return res;
+}
+
+module.exports = {
+  create,
 };
