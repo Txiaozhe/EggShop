@@ -29,7 +29,10 @@
 
 'use strict';
 
-const USER_TABLE_NAME = 'user';
+const tables = {
+  user: 'user',
+  userInfo: 'userinfo',
+};
 
 function* create(app, tableName, payload) {
   let res;
@@ -87,7 +90,7 @@ function* deleteOne(app, tableName, payload) {
 }
 
 module.exports = {
-  USER_TABLE_NAME,
+  tables,
 
   create,
   getOne,

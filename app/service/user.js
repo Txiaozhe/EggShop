@@ -29,30 +29,32 @@
 
 'use strict';
 
-const { USER_TABLE_NAME, create, getOne, getAll, modify, deleteOne } = require('../utils/mysqlKit');
-const INSERT_SUCCESS = 1;
+const { tables, create, getOne, getAll, modify, deleteOne } = require('../utils/mysqlKit');
 
 module.exports = app => {
   class User extends app.Service {
-    * register(username, mobile, password) {
-      const result = yield create(app, USER_TABLE_NAME, { username, mobile, password });
-      return result.affectedRows === INSERT_SUCCESS;
+    * register(nickname, mobile, password) {
+      // user 表建立用户
+      const userResult = yield create(app, tables.user, { nickname, mobile, password });
+      // userinfo 表建立用户
+      const infoResult = yield create(app, tables.userInfo, { nickname, mobile });
+      return infoResult.affectedRows === 1 && userResult.affectedRows === infoResult.affectedRows;
     }
 
     * searchUserById(id) {
-      return yield getOne(app, USER_TABLE_NAME, { id });
+      return yield getOne(app, tables.user, { id });
     }
 
     * getAllUser() {
-      return yield getAll(app, USER_TABLE_NAME);
+      return yield getAll(app, tables.user);
     }
 
     * modifyPassword(id, code, oldp, newp) {
-      const sqlOldPass = yield getOne(app, USER_TABLE_NAME, { id });
+      const sqlOldPass = yield getOne(app, tables.user, { id });
       if (sqlOldPass.password !== oldp) {
         return 'password or code err';
       }
-      const res = yield modify(app, USER_TABLE_NAME, {
+      const res = yield modify(app, tables.user, {
         id,
         password: newp,
       });
@@ -61,7 +63,7 @@ module.exports = app => {
     }
 
     * deleteUser(id) {
-      const res = yield deleteOne(app, USER_TABLE_NAME, { id });
+      const res = yield deleteOne(app, tables.user, { id });
       return res.affectedRows;
     }
   }

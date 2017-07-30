@@ -35,12 +35,12 @@ module.exports = app => {
   class UserController extends app.Controller {
     * register() {
       const { ctx } = this;
-      const { username, mobile, password } = ctx.request.body;
-      if (!checkParams(username, mobile, password)) {
+      const { nickname, mobile, password } = ctx.request.body;
+      if (!checkParams(nickname, mobile, password)) {
         ctx.body = newErrorWithMessage(error.ErrInvalidParams);
         return;
       }
-      const res = yield ctx.service.user.register(username, mobile, password);
+      const res = yield ctx.service.user.register(nickname, mobile, password);
       if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
