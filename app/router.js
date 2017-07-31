@@ -43,5 +43,6 @@ module.exports = app => {
   app.post('/user/password/modify', 'user.modifyPassword');
   app.post('/user/delete', 'user.deleteUser');
   app.post('/user/login', 'user.login');
+  app.post('/user/userinfo/modify', app.jwt, 'user.modifyInfo');
   app.get('/auth', app.jwt, auth, 'user.testAuth');
 };

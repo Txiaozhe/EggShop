@@ -46,7 +46,8 @@ module.exports = app => {
       const conn = yield getConn(app);
       try {
         yield conn.insert(tables.user, { nickname, mobile, password });
-        yield conn.insert(tables.userInfo, { nickname, mobile });
+        const user = yield conn.get(tables.user, { mobile });
+        yield conn.insert(tables.userInfo, { id: user.id, nickname, mobile });
         yield conn.commit();
       } catch (e) {
         yield conn.rollback();
@@ -88,6 +89,19 @@ module.exports = app => {
         return getToken(app, res.id);
       }
       return false;
+    }
+
+    * modifyInfo(id, mobile) {
+      const conn = yield getConn(app);
+      try {
+        yield conn.update(tables.user, { id, mobile });
+        yield conn.update(tables.userInfo, { id, mobile });
+        yield conn.commit();
+        return true;
+      } catch (error) {
+        yield conn.rollback();
+        return false;
+      }
     }
   }
   return User;

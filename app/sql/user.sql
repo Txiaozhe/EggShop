@@ -7,11 +7,11 @@ CREATE TABLE IF NOT EXISTS `user` (
 );
 
 CREATE TABLE IF NOT EXISTS `userinfo` (
-    `userid` INT AUTO_INCREMENT,
+    `id` INT NOT NULL,
     `nickname` TEXT NOT NULL,
     `age` INT UNSIGNED,
     `mobile` TEXT NOT NULL,
     `email` TEXT,
     `address` TEXT,
-    PRIMARY KEY ( `userid` )
+    PRIMARY KEY ( `id` )
 );
