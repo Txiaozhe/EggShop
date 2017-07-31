@@ -24,24 +24,13 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/07/30        Tang Xiaoji
  */
 
 'use strict';
 
-module.exports = app => {
-  const auth = app.middlewares.auth();
-
-  app.get('/', 'home.index');
-
-  app.post('/home', 'home.home');
-
-  // user
-  app.post('/user/register', 'user.register');
-  app.post('/user/user', 'user.searchUserById');
-  app.get('/user/all', 'user.getAllUser');
-  app.post('/user/password/modify', 'user.modifyPassword');
-  app.post('/user/delete', 'user.deleteUser');
-  app.post('/user/login', 'user.login');
-  app.get('/auth', app.jwt, auth, 'user.testAuth');
+module.exports = () => {
+  return function* auth(next) {
+    yield next;
+  };
 };

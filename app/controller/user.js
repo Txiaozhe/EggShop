@@ -113,10 +113,15 @@ module.exports = app => {
       }
       const res = yield ctx.service.user.login(mobile, password);
       if (res) {
-        ctx.body = newErrorWithMessage(error.ErrSucceed, getToken(app, mobile));
+        ctx.body = newErrorWithMessage(error.ErrSucceed, res);
       } else {
         ctx.body = newErrorWithMessage(error.ErrInvalidParams);
       }
+    }
+
+    * testAuth() {
+      const { ctx } = this;
+      ctx.body = ctx.state.user;
     }
   }
   return UserController;

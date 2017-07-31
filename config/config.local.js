@@ -29,9 +29,12 @@
 
 'use strict';
 
+// const host_mobile = '172.20.10.2';
+const host_local = '10.0.0.164';
+
 exports.mysql = {
   client: {
-    host: '172.20.10.2',
+    host: host_local,
     port: '3306',
     user: 'root',
     password: '123456',
@@ -44,5 +47,5 @@ exports.mysql = {
 exports.jwt = {
   secret: 'egg_shop__1501055229355_649',
   enable: true,
-  match: '/user/token',
+  match: '/auth',
 };

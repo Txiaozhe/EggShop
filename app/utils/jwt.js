@@ -29,8 +29,8 @@
 
 'use strict';
 
-function getToken(app, mobile) {
-  return app.jwt.sign({ mobile }, app.config.jwt.secret);
+function getToken(app, id) {
+  return app.jwt.sign({ id }, app.config.jwt.secret);
 }
 
 module.exports = {

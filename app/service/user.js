@@ -38,6 +38,8 @@ const {
   getConn,
 } = require('../utils/mysqlKit');
 
+const { getToken } = require('../utils/jwt');
+
 module.exports = app => {
   class User extends app.Service {
     * register(nickname, mobile, password) {
@@ -82,7 +84,10 @@ module.exports = app => {
 
     * login(mobile, password) {
       const res = yield getOne(app, tables.user, { mobile });
-      return res.password === password;
+      if (res.password === password) {
+        return getToken(app, res.id);
+      }
+      return false;
     }
   }
   return User;
