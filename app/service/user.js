@@ -39,13 +39,15 @@ const {
 } = require('../utils/mysqlKit');
 
 const { getToken } = require('../utils/jwt');
+const { aesEncrypt } = require('../utils/sha256');
 
 module.exports = app => {
   class User extends app.Service {
     * register(nickname, mobile, password) {
       const conn = yield getConn(app);
+      const pass = aesEncrypt(password);
       try {
-        yield conn.insert(tables.user, { nickname, mobile, password });
+        yield conn.insert(tables.user, { nickname, mobile, password: pass });
         const user = yield conn.get(tables.user, { mobile });
         yield conn.insert(tables.userInfo, { id: user.id, nickname, mobile });
         yield conn.commit();
@@ -53,7 +55,6 @@ module.exports = app => {
         yield conn.rollback();
         return false;
       }
-
       return true;
     }
 
