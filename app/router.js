@@ -40,7 +40,7 @@ module.exports = app => {
   app.post('/user/register', 'user.register');
   app.post('/user/user', 'user.searchUserById');
   app.get('/user/all', 'user.getAllUser');
-  app.post('/user/password/modify', 'user.modifyPassword');
+  app.post('/user/password/modify',app.jwt, 'user.modifyPassword');
   app.post('/user/delete', 'user.deleteUser');
   app.post('/user/login', 'user.login');
   app.post('/user/userinfo/modify', app.jwt, 'user.modifyInfo');

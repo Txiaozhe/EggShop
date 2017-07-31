@@ -75,16 +75,22 @@ module.exports = app => {
 
     * modifyPassword() {
       const { ctx } = this;
-      const { id, code, oldp, newp } = ctx.request.body;
-      if (!checkParams(id, code, oldp, newp)) {
-        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+      const { password1 } = ctx.request.body;
+      const { password2 } = ctx.request.body;
+      const token = ctx.state.user;
+      if (!token) {
+        ctx.body = newErrorWithMessage(error.ErrLoginRequired);
         return;
       }
-      const res = yield ctx.service.user.modifyPassword(id, code, oldp, newp);
-      if (res === 1) {
-        ctx.body = newErrorWithMessage(error.ErrSucceed);
-      } else {
-        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+      const pw= yield ctx.app.mysql.get(user,  {id:token.id});
+      console.log(pw);
+      if(pw.password===password1){
+        const res = yield ctx.service.user.modifyInfo(token.id, password2);
+      }
+      if(res){
+        ctx.body=newErrorWithMessage(error.ErrSucceed);
+      }else{
+        ctx.body= newErrorWithMessage(error.ErrMysql);
       }
     }
 

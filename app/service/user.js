@@ -65,17 +65,13 @@ module.exports = app => {
       return yield getAll(app, tables.user);
     }
 
-    * modifyPassword(id, code, oldp, newp) {
-      const sqlOldPass = yield getOne(app, tables.user, { id });
-      if (sqlOldPass.password !== oldp) {
-        return 'password or code err';
+    * modifyPassword(id, password) {
+      try {
+        yield  update(tables.user, { id, password })
+        return  true;
+      }catch (e){
+        return  false;
       }
-      const res = yield modify(app, tables.user, {
-        id,
-        password: newp,
-      });
-
-      return res.affectedRows;
     }
 
     * deleteUser(id) {
@@ -103,6 +99,7 @@ module.exports = app => {
         return false;
       }
     }
+
   }
   return User;
 };
