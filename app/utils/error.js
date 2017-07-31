@@ -76,6 +76,10 @@ const error = {
   },
 };
 
+const operateCode = {
+  SUCCESS_AFFECTED_ROWS: 1,
+};
+
 function newErrorWithMessage(err, msg) {
   return {
     status: err.code,
@@ -94,6 +98,7 @@ function checkParams() {
 
 module.exports = {
   error,
+  operateCode,
   newErrorWithMessage,
   checkParams,
 };

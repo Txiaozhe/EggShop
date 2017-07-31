@@ -24,28 +24,24 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/07/31        Tang Xiaoji
  */
 
 'use strict';
 
-// const host_mobile = '172.20.10.2';
-const host_local = '10.0.0.164';
+const CryptoJS = require('crypto-js');
+const SECRET = 'egg_shop_1501055229355_649';
 
-exports.mysql = {
-  client: {
-    host: host_local,
-    port: '3306',
-    user: 'root',
-    password: '123456',
-    database: 'eggshop',
-  },
-  app: true,
-  agent: false,
-};
+function aesEncrypt(data) {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET);
+}
 
-exports.jwt = {
-  secret: 'egg_shop_1501055229355_649',
-  enable: true,
-  match: '/auth',
+function aesDecrypt(data) {
+  const bytes = CryptoJS.AES.decrypt(data.toString(), SECRET);
+  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+}
+
+module.exports = {
+  aesEncrypt,
+  aesDecrypt,
 };

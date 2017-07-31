@@ -29,7 +29,7 @@
 
 'use strict';
 
-const { error, newErrorWithMessage, checkParams } = require('../utils/error');
+const { error, newErrorWithMessage, checkParams, operateCode } = require('../utils/error');
 
 module.exports = app => {
   class UserController extends app.Controller {
@@ -75,22 +75,29 @@ module.exports = app => {
 
     * modifyPassword() {
       const { ctx } = this;
-      const { password1 } = ctx.request.body;
-      const { password2 } = ctx.request.body;
+      const { code, oldpass, newpass } = ctx.request.body;
       const token = ctx.state.user;
+      if (!checkParams(code, oldpass, newpass)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      if (oldpass === newpass) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
       if (!token) {
         ctx.body = newErrorWithMessage(error.ErrLoginRequired);
         return;
       }
-      const pw= yield ctx.app.mysql.get(user,  {id:token.id});
-      console.log(pw);
-      if(pw.password===password1){
-        const res = yield ctx.service.user.modifyInfo(token.id, password2);
-      }
-      if(res){
-        ctx.body=newErrorWithMessage(error.ErrSucceed);
-      }else{
-        ctx.body= newErrorWithMessage(error.ErrMysql);
+
+      const res = yield ctx.service.user.modifyPassword(token.id, oldpass, newpass);
+
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
 
@@ -102,7 +109,7 @@ module.exports = app => {
         return;
       }
       const res = yield ctx.service.user.deleteUser(id);
-      if (res === 1) {
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
         ctx.body = newErrorWithMessage(error.ErrDelete);

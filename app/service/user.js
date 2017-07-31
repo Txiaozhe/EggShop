@@ -65,12 +65,16 @@ module.exports = app => {
       return yield getAll(app, tables.user);
     }
 
-    * modifyPassword(id, password) {
+    * modifyPassword(id, oldpass, newpass) {
       try {
-        yield  update(tables.user, { id, password })
-        return  true;
-      }catch (e){
-        return  false;
+        const info = yield getOne(app, tables.user, { id });
+        if (info.password === oldpass) {
+          const res = yield modify(app, tables.user, { id, password: newpass });
+          return res.affectedRows;
+        }
+        return false;
+      } catch (e) {
+        return false;
       }
     }
 
@@ -80,11 +84,15 @@ module.exports = app => {
     }
 
     * login(mobile, password) {
-      const res = yield getOne(app, tables.user, { mobile });
-      if (res.password === password) {
-        return getToken(app, res.id);
+      try {
+        const res = yield getOne(app, tables.user, { mobile });
+        if (res.password === password) {
+          return getToken(app, res.id);
+        }
+        return false;
+      } catch (error) {
+        return false;
       }
-      return false;
     }
 
     * modifyInfo(id, mobile) {
