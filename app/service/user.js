@@ -72,12 +72,11 @@ module.exports = app => {
         const info = yield getOne(app, tables.user, { id });
         if (aesDecrypt(info.password) === oldpass) {
           const pass = aesEncrypt(newpass);
-          const res = yield app.mysql.update(tables.user, { id, password: pass });
+          const res = yield modify(app, tables.user, { id, password: pass });
           return res.affectedRows;
         }
         return false;
       } catch (e) {
-        console.log(e);
         return false;
       }
     }
