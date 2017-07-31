@@ -39,7 +39,7 @@ const {
 } = require('../utils/mysqlKit');
 
 const { getToken } = require('../utils/jwt');
-const { aesEncrypt } = require('../utils/sha256');
+const { aesEncrypt, aesDecrypt } = require('../utils/aes');
 
 module.exports = app => {
   class User extends app.Service {
@@ -52,6 +52,7 @@ module.exports = app => {
         yield conn.insert(tables.userInfo, { id: user.id, nickname, mobile });
         yield conn.commit();
       } catch (e) {
+        console.log(e);
         yield conn.rollback();
         return false;
       }
@@ -69,12 +70,14 @@ module.exports = app => {
     * modifyPassword(id, oldpass, newpass) {
       try {
         const info = yield getOne(app, tables.user, { id });
-        if (info.password === oldpass) {
-          const res = yield modify(app, tables.user, { id, password: newpass });
+        if (aesDecrypt(info.password) === oldpass) {
+          const pass = aesEncrypt(newpass);
+          const res = yield app.mysql.update(tables.user, { id, password: pass });
           return res.affectedRows;
         }
         return false;
       } catch (e) {
+        console.log(e);
         return false;
       }
     }
@@ -87,7 +90,7 @@ module.exports = app => {
     * login(mobile, password) {
       try {
         const res = yield getOne(app, tables.user, { mobile });
-        if (res.password === password) {
+        if (aesDecrypt(res.password) === password) {
           return getToken(app, res.id);
         }
         return false;

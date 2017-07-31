@@ -33,7 +33,7 @@ const CryptoJS = require('crypto-js');
 const SECRET = 'egg_shop_1501055229355_649';
 
 function aesEncrypt(data) {
-  return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET);
+  return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET).toString();
 }
 
 function aesDecrypt(data) {

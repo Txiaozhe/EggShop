@@ -68,14 +68,7 @@ function* getAll(app, tableName) {
 }
 
 function* modify(app, tableName, payload) {
-  let res;
-  try {
-    res = yield app.mysql.update(tableName, payload);
-  } catch (e) {
-    res = e;
-    throw e;
-  }
-  return res;
+  return yield app.mysql.update(tableName, payload);
 }
 
 function* deleteOne(app, tableName, payload) {
