@@ -29,7 +29,7 @@
 
 'use strict';
 
-const { create, modify, getOne, tables } = require('../utils/mysqlKit');
+const { create, modify, getAll, getOne, tables } = require('../utils/mysqlKit');
 const { addrStatus } = require('../utils/status');
 const { operateCode } = require('../utils/error');
 
@@ -95,8 +95,15 @@ module.exports = app => {
         });
         return res.affectedRows;
       } catch (e) {
-        console.log(e);
         return false;
+      }
+    }
+
+    * getAllAddr() {
+      try {
+        return yield getAll(app, tables.address);
+      } catch (e) {
+        return null;
       }
     }
   }

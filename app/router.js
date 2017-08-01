@@ -50,4 +50,5 @@ module.exports = app => {
   app.post('/address/create', app.jwt, 'address.create');
   app.post('/address/modify', app.jwt, 'address.modify');
   app.post('/address/default', app.jwt, 'address.setDefault');
+  app.get('/address/all', app.jwt, 'address.getAll');
 };

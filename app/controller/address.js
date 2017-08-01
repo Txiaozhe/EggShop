@@ -81,6 +81,16 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
+
+    * getAll() {
+      const { ctx } = this;
+      const res = yield ctx.service.address.getAllAddr();
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed, res);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
   }
   return AddressController;
 };
