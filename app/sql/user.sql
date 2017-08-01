@@ -1,17 +1,20 @@
 CREATE TABLE IF NOT EXISTS `user` (
-    `id` INT AUTO_INCREMENT,
-    `nickname` TEXT NOT NULL,
+    `id` int(16) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `nickname` VARCHAR(64) DEFAULT NULL UNIQUE,
     `mobile` TEXT NOT NULL,
-    `password` TEXT NOT NULL,
+    `password` VARCHAR(128) NOT NULL DEFAULT '',
+    `status` INT(8) DEFAULT 0,
+    `created` DATETIME NOT NULL DEFAULT current_timestamp,
     PRIMARY KEY ( `id` )
-);
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE IF NOT EXISTS `userinfo` (
-    `id` INT NOT NULL,
-    `nickname` TEXT NOT NULL,
-    `age` INT UNSIGNED,
-    `mobile` TEXT NOT NULL,
-    `email` TEXT,
-    `address` TEXT,
+    `id` INT(16) NOT NULL,
+    `nickname` VARCHAR(100) DEFAULT NULL,
+    `age` INT(8) UNSIGNED,
+    `mobile` VARCHAR(20) NOT NULL DEFAULT '',
+    `email` VARCHAR(100) DEFAULT NULL,
+    `sex` TINYINT(1) DEFAULT NULL,
+    `address` VARCHAR(100) DEFAULT NULL,
     PRIMARY KEY ( `id` )
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
