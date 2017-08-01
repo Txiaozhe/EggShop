@@ -180,6 +180,7 @@ module.exports = app => {
       }
     }
 
+    // 根据 id 获取用户
     * getUserInfoById() {
       const { ctx } = this;
       const { id } = ctx.request.body;
@@ -189,6 +190,23 @@ module.exports = app => {
       }
 
       const res = yield ctx.service.user.getUserInfoById(id);
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed, res);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
+
+    // 获取当前登录用户的信息
+    * info() {
+      const { ctx } = this;
+      const token = ctx.state.user;
+      if (!token) {
+        ctx.body = newErrorWithMessage(error.ErrLoginRequired);
+        return;
+      }
+
+      const res = yield ctx.service.user.getUserInfoById(token.id);
       if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed, res);
       } else {
