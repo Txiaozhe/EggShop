@@ -57,10 +57,10 @@ function* getOne(app, tableName, payload) {
   return res;
 }
 
-function* getAll(app, tableName) {
+function* getAll(app, tableName, where) {
   let res;
   try {
-    res = yield app.mysql.select(tableName);
+    res = yield app.mysql.select(tableName, { where });
   } catch (e) {
     res = e;
     throw e;

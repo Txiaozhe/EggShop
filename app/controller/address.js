@@ -91,6 +91,22 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
+
+    * delete() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      const res = yield ctx.service.address.delete(id);
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
   }
   return AddressController;
 };

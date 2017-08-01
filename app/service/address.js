@@ -101,9 +101,23 @@ module.exports = app => {
 
     * getAllAddr() {
       try {
-        return yield getAll(app, tables.address);
+        return yield getAll(app, tables.address, {
+          status: [ addrStatus.NORMAL, addrStatus.DEFAULT ],
+        });
       } catch (e) {
         return null;
+      }
+    }
+
+    * delete(id) {
+      try {
+        const res = yield modify(app, tables.address, {
+          id,
+          status: addrStatus.DELETED,
+        });
+        return res.affectedRows;
+      } catch (e) {
+        return false;
       }
     }
   }
