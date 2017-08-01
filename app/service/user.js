@@ -40,6 +40,7 @@ const {
 
 const { getToken } = require('../utils/jwt');
 const { aesEncrypt, aesDecrypt } = require('../utils/aes');
+const { userStatus } = require('../utils/status');
 
 module.exports = app => {
   class User extends app.Service {
@@ -64,7 +65,21 @@ module.exports = app => {
     }
 
     * getAllUser() {
-      return yield getAll(app, tables.user);
+      try {
+        const res = yield getAll(app, tables.user, {
+          status: userStatus.NORMAL,
+        });
+        return res.map(function(ele) {
+          return {
+            id: ele.id,
+            nickname: ele.nickname,
+            mobile: ele.mobile,
+            status: ele.status,
+          };
+        });
+      } catch (error) {
+        return null;
+      }
     }
 
     * modifyPassword(id, oldpass, newpass) {
@@ -82,8 +97,15 @@ module.exports = app => {
     }
 
     * deleteUser(id) {
-      const res = yield deleteOne(app, tables.user, { id });
-      return res.affectedRows;
+      try {
+        const res = yield modify(app, tables.user, {
+          id,
+          status: userStatus.DELETED,
+        });
+        return res.affectedRows;
+      } catch (error) {
+        return false;
+      }
     }
 
     * login(mobile, password) {
