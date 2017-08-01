@@ -96,6 +96,30 @@ module.exports = app => {
       }
     }
 
+    * ban(id) {
+      try {
+        const res = yield modify(app, tables.user, {
+          id,
+          status: userStatus.BANNED,
+        });
+        return res.affectedRows;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    * resume(id) {
+      try {
+        const res = yield modify(app, tables.user, {
+          id,
+          status: userStatus.NORMAL,
+        });
+        return res.affectedRows;
+      } catch (error) {
+        return false;
+      }
+    }
+
     * deleteUser(id) {
       try {
         const res = yield modify(app, tables.user, {

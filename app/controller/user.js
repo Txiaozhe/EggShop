@@ -101,7 +101,7 @@ module.exports = app => {
       }
     }
 
-    * deleteUser() {
+    * delete() {
       const { ctx } = this;
       const { id } = ctx.request.body;
       if (!checkParams(id)) {
@@ -113,6 +113,38 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
         ctx.body = newErrorWithMessage(error.ErrDelete);
+      }
+    }
+
+    * ban() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      const res = yield ctx.service.user.ban(id);
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
+
+    * resume() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      const res = yield ctx.service.user.resume(id);
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
 

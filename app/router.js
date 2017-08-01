@@ -41,7 +41,9 @@ module.exports = app => {
   app.post('/user/user', 'user.searchUserById');
   app.get('/user/all', 'user.getAllUser');
   app.post('/user/password/modify', app.jwt, 'user.modifyPassword');
-  app.post('/user/delete', 'user.deleteUser');
+  app.post('/user/delete', 'user.delete');
+  app.post('/user/ban', app.jwt, 'user.ban');
+  app.post('/user/resume', app.jwt, 'user.resume');
   app.post('/user/login', 'user.login');
   app.post('/user/userinfo/modify', app.jwt, 'user.modifyInfo');
   app.get('/auth', app.jwt, auth, 'user.testAuth');
