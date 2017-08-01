@@ -18,3 +18,18 @@ CREATE TABLE IF NOT EXISTS `userinfo` (
     `address` VARCHAR(100) DEFAULT NULL,
     PRIMARY KEY ( `id` )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE IF NOT EXISTS `address` (
+    `id` INT(16) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(64) NOT NULL DEFAULT '',
+    `userid` INT(16) NOT NULL,
+    `mobile` VARCHAR(16) NOT NULL,
+    `province` VARCHAR(64) NOT NULL,
+    `city` VARCHAR(64) NOT NULL,
+    `street` VARCHAR(64) NOT NULL,
+    `address` VARCHAR(256) NOT NULL,
+    `created` DATETIME NOT NULL DEFAULT current_timestamp,
+    `updated` DATETIME DEFAULT NULL,
+    `status` INT(8) DEFAULT 0,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

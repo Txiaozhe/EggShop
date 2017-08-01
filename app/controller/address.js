@@ -24,28 +24,31 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/08/01        Tang Xiaoji
  */
 
 'use strict';
 
+const { operateCode, newErrorWithMessage, error, checkParams } = require('../utils/error');
+
 module.exports = app => {
-  const auth = app.middlewares.auth();
+  class AddressController extends app.Controller {
+    * create() {
+      const { ctx } = this;
+      const addrInfo = ctx.request.body;
+      if (!checkParams(addrInfo.name, addrInfo.mobile, addrInfo.province, addrInfo.city, addrInfo.street, addrInfo.address)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
 
-  app.get('/', 'home.index');
-
-  app.post('/home', 'home.home');
-
-  // user
-  app.post('/user/register', 'user.register');
-  app.post('/user/user', 'user.searchUserById');
-  app.get('/user/all', 'user.getAllUser');
-  app.post('/user/password/modify', app.jwt, 'user.modifyPassword');
-  app.post('/user/delete', 'user.deleteUser');
-  app.post('/user/login', 'user.login');
-  app.post('/user/userinfo/modify', app.jwt, 'user.modifyInfo');
-  app.get('/auth', app.jwt, auth, 'user.testAuth');
-
-  // address
-  app.post('/address/create', app.jwt, 'address.create');
+      const token = ctx.state.user;
+      const res = yield ctx.service.address.create(addrInfo, token.id);
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      }
+    }
+  }
+  return AddressController;
 };

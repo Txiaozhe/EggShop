@@ -35,6 +35,13 @@ const userStatus = {
   DELETED: 2,
 };
 
+const addrStatus = {
+  NORMAL: 0,
+  DEFAULT: 1,
+  DELETED: 2,
+};
+
 module.exports = {
   userStatus,
+  addrStatus,
 };

@@ -24,28 +24,32 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/08/01       Tang Xiaoji
  */
 
 'use strict';
 
+const { create, tables } = require('../utils/mysqlKit');
+
 module.exports = app => {
-  const auth = app.middlewares.auth();
-
-  app.get('/', 'home.index');
-
-  app.post('/home', 'home.home');
-
-  // user
-  app.post('/user/register', 'user.register');
-  app.post('/user/user', 'user.searchUserById');
-  app.get('/user/all', 'user.getAllUser');
-  app.post('/user/password/modify', app.jwt, 'user.modifyPassword');
-  app.post('/user/delete', 'user.deleteUser');
-  app.post('/user/login', 'user.login');
-  app.post('/user/userinfo/modify', app.jwt, 'user.modifyInfo');
-  app.get('/auth', app.jwt, auth, 'user.testAuth');
-
-  // address
-  app.post('/address/create', app.jwt, 'address.create');
+  class Address extends app.Service {
+    * create(addrInfo, id) {
+      try {
+        const res = yield create(app, tables.address, {
+          name: addrInfo.name,
+          userid: id,
+          mobile: addrInfo.mobile,
+          province: addrInfo.province,
+          city: addrInfo.city,
+          street: addrInfo.street,
+          address: addrInfo.address,
+        });
+        return res.affectedRows;
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    }
+  }
+  return Address;
 };
