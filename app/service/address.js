@@ -30,6 +30,8 @@
 'use strict';
 
 const { create, modify, getOne, tables } = require('../utils/mysqlKit');
+const { addrStatus } = require('../utils/status');
+const { operateCode } = require('../utils/error');
 
 module.exports = app => {
   class Address extends app.Service {
@@ -66,6 +68,34 @@ module.exports = app => {
         });
         return res.affectedRows;
       } catch (e) {
+        return false;
+      }
+    }
+
+    * setDefault(id) {
+      try {
+        const addr = yield getOne(app, tables.address, {
+          status: addrStatus.DEFAULT,
+        });
+
+        if (addr && addr.id === id) {
+          return operateCode.SUCCESS_AFFECTED_ROWS;
+        }
+
+        if (addr && addr.id && addr.id !== id) {
+          yield modify(app, tables.address, {
+            id: addr.id,
+            status: addrStatus.NORMAL,
+          });
+        }
+
+        const res = yield modify(app, tables.address, {
+          id,
+          status: addrStatus.DEFAULT,
+        });
+        return res.affectedRows;
+      } catch (e) {
+        console.log(e);
         return false;
       }
     }

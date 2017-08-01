@@ -46,7 +46,7 @@ module.exports = app => {
       if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
-        ctx.body = newErrorWithMessage(error.ErrSucceed);
+        ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
 
@@ -62,7 +62,23 @@ module.exports = app => {
       if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
+
+    * setDefault() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      const res = yield ctx.service.address.setDefault(id);
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
   }
