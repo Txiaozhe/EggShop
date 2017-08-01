@@ -180,6 +180,22 @@ module.exports = app => {
       }
     }
 
+    * getUserInfoById() {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      const res = yield ctx.service.user.getUserInfoById(id);
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed, res);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
+
     * testAuth() {
       const { ctx } = this;
       ctx.body = ctx.state.user;

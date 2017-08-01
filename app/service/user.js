@@ -157,6 +157,16 @@ module.exports = app => {
       }
     }
 
+    * getUserInfoById(id) {
+      try {
+        const res = yield getOne(app, tables.userInfo, {
+          id,
+        });
+        return res;
+      } catch (e) {
+        return null;
+      }
+    }
   }
   return User;
 };

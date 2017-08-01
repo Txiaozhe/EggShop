@@ -46,6 +46,7 @@ module.exports = app => {
   app.post('/user/resume', app.jwt, 'user.resume');
   app.post('/user/login', 'user.login');
   app.post('/user/userinfo/modify', app.jwt, 'user.modifyInfo');
+  app.post('/user/userinfo/get', app.jwt, 'user.getUserInfoById'); // 根据 id 获取用户信息
   app.get('/auth', app.jwt, auth, 'user.testAuth');
 
   // address
