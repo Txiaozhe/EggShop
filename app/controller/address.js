@@ -49,6 +49,22 @@ module.exports = app => {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       }
     }
+
+    * modify() {
+      const { ctx } = this;
+      const addrInfo = ctx.request.body;
+      if (!checkParams(addrInfo.id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+
+      const res = yield ctx.service.address.modify(addrInfo);
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      }
+    }
   }
   return AddressController;
 };

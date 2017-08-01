@@ -29,7 +29,7 @@
 
 'use strict';
 
-const { create, tables } = require('../utils/mysqlKit');
+const { create, modify, getOne, tables } = require('../utils/mysqlKit');
 
 module.exports = app => {
   class Address extends app.Service {
@@ -46,7 +46,26 @@ module.exports = app => {
         });
         return res.affectedRows;
       } catch (e) {
-        console.log(e);
+        return false;
+      }
+    }
+
+    * modify(addrInfo) {
+      const now = new Date();
+      try {
+        const addr = yield getOne(app, tables.address, { id: addrInfo.id });
+        const res = yield modify(app, tables.address, {
+          id: addrInfo.id,
+          name: addrInfo.name ? addrInfo.name : addr.name,
+          mobile: addrInfo.mobile ? addrInfo.mobile : addr.mobile,
+          province: addrInfo.province ? addrInfo.province : addr.province,
+          city: addrInfo.city ? addrInfo.city : addr.city,
+          street: addrInfo.street ? addrInfo.street : addr.street,
+          address: addrInfo.address ? addrInfo.address : addr.address,
+          updated: now,
+        });
+        return res.affectedRows;
+      } catch (e) {
         return false;
       }
     }
