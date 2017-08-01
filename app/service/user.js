@@ -34,7 +34,6 @@ const {
   getOne,
   getAll,
   modify,
-  deleteOne,
   getConn,
 } = require('../utils/mysqlKit');
 
