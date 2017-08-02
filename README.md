@@ -10,6 +10,10 @@ $ npm install
 $ npm run dev    # 开发调试阶段
 $ npm run build  # 部署阶段
 ```
+### 运行环境
+* Windows/OSX/Linux  NodeJS
+* Docker 
+
 ### 功能
 - [x] 用户系统
 - [ ] 商品系统
