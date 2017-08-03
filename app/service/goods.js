@@ -93,6 +93,19 @@ module.exports = app => {
         return false;
       }
     }
+
+    * banned (id) {
+      try {
+        const res = yield modify(app, tables.goods, {
+          id,
+          status: goodsStatus.BANNED,
+        });
+        return res.affectedRows;
+      } catch (e) {
+        return false;
+      }
+    }
+
   }
   return goods;
 };
