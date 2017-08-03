@@ -64,6 +64,7 @@ module.exports = app => {
           city: addrInfo.city ? addrInfo.city : addr.city,
           street: addrInfo.street ? addrInfo.street : addr.street,
           address: addrInfo.address ? addrInfo.address : addr.address,
+          status: addrInfo.status ? addrInfoInfo.status : addr.status,
           updated: now,
         });
         return res.affectedRows;

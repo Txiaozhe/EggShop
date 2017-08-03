@@ -82,6 +82,17 @@ module.exports = app => {
       }
     }
 
+    * delete (id) {
+      try {
+        const res = yield modify(app, tables.goods, {
+          id,
+          status: goodsStatus.DELETED,
+        });
+        return res.affectedRows;
+      } catch (e) {
+        return false;
+      }
+    }
   }
   return goods;
 };
