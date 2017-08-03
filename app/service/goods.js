@@ -61,11 +61,11 @@ module.exports = app => {
       }
     }
 
-    *modify(goodsInfo) {
+    * modify(goodsInfo) {
       const now = new Date();
-      try{
-        const goods = yield getOne(app, tables.goods, { id: goodsInfo.id })
-        const res = yield modify(app,tables.goods, {
+      try {
+        const goods = yield getOne(app, tables.goods, { id: goodsInfo.id });
+        const res = yield modify(app, tables.goods, {
           id: goodsInfo.id,
           name: goodsInfo.name ? goodsInfo.name : goods.name,
           price: goodsInfo.price ? goodsInfo.price : goods.price,
@@ -75,7 +75,7 @@ module.exports = app => {
           desc: goodsInfo.address ? goodsInfo.address : goods.desc,
           status: goodsInfo.status ? goodsInfo.status : goods.status,
           updated: now,
-        })
+        });
         return res.affectedRows;
       } catch (e) {
         return false;

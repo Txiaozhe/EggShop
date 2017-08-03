@@ -55,8 +55,8 @@ module.exports = app => {
 
   // goods
   app.post('/goods/create', app.jwt, 'goods.create');
-  app.get('/goods/getAll',app.jwt,'goods.getAll');
-  app.post('/goods/modify',app.jwt,'goods.modify')
+  app.get('/goods/getAll', app.jwt, 'goods.getAll');
+  app.post('/goods/modify', app.jwt, 'goods.modify');
 
   // avatar
   app.resources('avatar', '/avatar', app.controller.avatar);

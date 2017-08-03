@@ -53,8 +53,7 @@ module.exports = app => {
     * getAll() {
       const { ctx } = this;
       const res = yield ctx.service.goods.getAll();
-      console.log( res );
-      if( res ) {
+      if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed, res);
       } else {
         ctx.body = newErrorWithMessage(error.ErrMysql);
@@ -69,7 +68,7 @@ module.exports = app => {
         return;
       }
       const res = yield ctx.service.goods.modify(goodsInfo);
-      console.log( res );
+
       if (res) {
         ctx.body = newErrorWithMessage(error.ErrSucceed);
       } else {
