@@ -41,7 +41,14 @@ const addrStatus = {
   DELETED: 2,
 };
 
+const goodsStatus = {
+  NORMAL: 0,
+  BANNED: 1,
+  DELETED: 2,
+};
+
 module.exports = {
   userStatus,
   addrStatus,
+  goodsStatus,
 };

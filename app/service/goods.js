@@ -29,7 +29,8 @@
 
 'use strict';
 
-const { tables, create } = require('../utils/mysqlKit');
+const { tables, create, getAll, modify, getOne } = require('../utils/mysqlKit');
+const { goodsStatus } = require('../utils/status');
 
 module.exports = app => {
   class goods extends app.Service {
@@ -42,12 +43,45 @@ module.exports = app => {
           count: goodsInfo.count,
           bought: goodsInfo.bought,
           userid: id,
+          status: goodsStatus.NORMAL,
         });
         return res.affectedRows;
       } catch (e) {
         return false;
       }
     }
+
+    * getAll() {
+      try {
+        return yield getAll(app, tables.goods, {
+          status: [ goodsStatus.NORMAL ],
+        });
+      } catch (e) {
+        return null;
+      }
+    }
+
+    *modify(goodsInfo) {
+      const now = new Date();
+      try{
+        const goods = yield getOne(app, tables.goods, { id: goodsInfo.id })
+        const res = yield modify(app,tables.goods, {
+          id: goodsInfo.id,
+          name: goodsInfo.name ? goodsInfo.name : goods.name,
+          price: goodsInfo.price ? goodsInfo.price : goods.price,
+          count: goodsInfo.count ? goodsInfo.count : goods.count,
+          bought: goodsInfo.bought ? goodsInfo.bought : goods.bought,
+          userid: goodsInfo.userid ? goodsInfo.userid : goods.userid,
+          desc: goodsInfo.address ? goodsInfo.address : goods.desc,
+          status: goodsInfo.status ? goodsInfo.status : goods.status,
+          updated: now,
+        })
+        return res.affectedRows;
+      } catch (e) {
+        return false;
+      }
+    }
+
   }
   return goods;
 };
