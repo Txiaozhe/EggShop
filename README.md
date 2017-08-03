@@ -23,6 +23,6 @@ $ npm run build  # 部署阶段
 
 ### 数据库存储
 - [x] MySQL
-- [ ] MongoDB
+- [x] MongoDB
 - [ ] Redis
 - [ ] CockroachDB
