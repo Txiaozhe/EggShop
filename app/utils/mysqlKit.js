@@ -33,6 +33,7 @@ const tables = {
   user: 'user',
   userInfo: 'userinfo',
   address: 'address',
+  goods: 'goods',
 };
 
 function* create(app, tableName, payload) {

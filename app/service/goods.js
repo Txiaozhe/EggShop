@@ -27,31 +27,27 @@
  *     Initial: 2017/08/03        Li Zhaoxia
  */
 
-"use strict";
+'use strict';
 
-const {modify,create}=require('../utils/mysqlKit');
+const { tables, create } = require('../utils/mysqlKit');
 
-module.exports=app=>{
+module.exports = app => {
   class goods extends app.Service {
-    *create(goodsInfo,id){
-      try{
-        const res=yield create(app,tables.goods,{
-          name:goodsInfo.name,
-          price:goodsInfo.price,
-          desc:goodsInfo.desc,
-          count:goodsInfo.count,
-          bought:goodsInfo.bought,
-          userid:id,
-        })
+    * create(goodsInfo, id) {
+      try {
+        const res = yield create(app, tables.goods, {
+          name: goodsInfo.name,
+          price: goodsInfo.price,
+          desc: goodsInfo.desc,
+          count: goodsInfo.count,
+          bought: goodsInfo.bought,
+          userid: id,
+        });
         return res.affectedRows;
-      }catch (e){
+      } catch (e) {
         return false;
       }
-
     }
-
   }
-
-}
-
-
+  return goods;
+};

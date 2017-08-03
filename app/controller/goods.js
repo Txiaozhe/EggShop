@@ -27,31 +27,28 @@
  *     Initial: 2017/08/03        Li Zhaoxia
  */
 
-"use strict";
+'use strict';
 
-const {  checkParams, newErrorWithMessage, error, operateCode } = require('../utils/error');
+const { checkParams, newErrorWithMessage, error, operateCode } = require('../utils/error');
 
-module.exports=app=>{
-  class goodsController extends app.Controller{
-    *create(){
-      const {ctx}=this;
-      const goodsInfo=ctx.request.body;
-      console.log(goodsInfo);
-      if(checkParams(goodsInfo.name,goodsInfo.desc,goodsInfo.price,goodsInfo.count,goodsInfo.bought)){
-        ctx.body=newErrorWithMessage(error.ErrInvalidParams);
+module.exports = app => {
+  class goodsController extends app.Controller {
+    * create() {
+      const { ctx } = this;
+      const goodsInfo = ctx.request.body;
+      if (!checkParams(goodsInfo.name, goodsInfo.desc, goodsInfo.price, goodsInfo.count, goodsInfo.bought)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
         return;
       }
-
-      const token=ctx.state.user;
+      const token = ctx.state.user;
       const res = yield ctx.service.goods.create(goodsInfo, token.id);
-      if(res===operateCode.SUCCESS_AFFECTED_ROWS){
-        ctx.body=newErrorWithMessage(error.ErrSucceed);
-      }else{
-        ctx.body=newErrorWithMessage(error.ErrMysql)
+
+      if (res === operateCode.SUCCESS_AFFECTED_ROWS) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
       }
     }
   }
   return goodsController;
-}
-
-
+};

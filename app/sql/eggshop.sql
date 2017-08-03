@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `userinfo` (
     `email` VARCHAR(100) DEFAULT NULL,
     `sex` TINYINT(1) DEFAULT NULL,
     `address` VARCHAR(100) DEFAULT NULL,
+    `created` DATETIME NOT NULL DEFAULT current_timestamp,
     PRIMARY KEY ( `id` )
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -42,5 +43,6 @@ CREATE TABLE IF NOT EXISTS `goods` (
     `price` DOUBLE(7, 2) NOT NULL,
     `count` INT(64) UNSIGNED NOT NULL,
     `bought` INT(64) UNSIGNED NOT NULL,
+    `created` DATETIME NOT NULL DEFAULT current_timestamp,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
