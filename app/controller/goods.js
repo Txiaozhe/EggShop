@@ -4,7 +4,7 @@
  * Copyright (c) 2017 SmartestEE Co,Ltd..
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the 'Software'), to deal
+ * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
@@ -13,7 +13,7 @@
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -24,33 +24,34 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/08/03        Li Zhaoxia
  */
 
-'use strict';
+"use strict";
 
-// const host_mobile = '172.20.10.2';
-const host_local = '10.0.0.164';
+const {  checkParams, newErrorWithMessage, error, operateCode } = require('../utils/error');
 
-exports.mysql = {
-  client: {
-    host: host_local,
-    port: '3306',
-    user: 'root',
-    password: '123456',
-    database: 'eggshop',
-  },
-  app: true,
-  agent: false,
-};
+module.exports=app=>{
+  class goodsController extends app.Controller{
+    *create(){
+      const {ctx}=this;
+      const goodsInfo=ctx.request.body;
+      console.log(goodsInfo);
+      if(checkParams(goodsInfo.name,goodsInfo.desc,goodsInfo.price,goodsInfo.count,goodsInfo.bought)){
+        ctx.body=newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
 
-exports.mongoose = {
-  url: 'mongodb://10.0.0.164:27017/eggshop',
-  options: {},
-};
+      const token=ctx.state.user;
+      const res = yield ctx.service.goods.create(goodsInfo, token.id);
+      if(res===operateCode.SUCCESS_AFFECTED_ROWS){
+        ctx.body=newErrorWithMessage(error.ErrSucceed);
+      }else{
+        ctx.body=newErrorWithMessage(error.ErrMysql)
+      }
+    }
+  }
+  return goodsController;
+}
 
-exports.jwt = {
-  secret: 'egg_shop_1501055229355_649',
-  enable: true,
-  match: '/auth',
-};
+
