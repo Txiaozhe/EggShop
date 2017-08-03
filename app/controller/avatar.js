@@ -24,33 +24,42 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/08/02        Tang Xiaoji
  */
 
 'use strict';
 
-// const host_mobile = '172.20.10.2';
-const host_local = '10.0.0.164';
-
-exports.mysql = {
-  client: {
-    host: host_local,
-    port: '3306',
-    user: 'root',
-    password: '123456',
-    database: 'eggshop',
-  },
-  app: true,
-  agent: false,
+// get /avatar
+exports.index = function* (ctx) {
+  ctx.body = yield ctx.service.avatar.getAll();
 };
 
-exports.mongoose = {
-  url: 'mongodb://localhost:27017/eggshop',
-  options: {},
+// get /avatar/new
+exports.new = function* (ctx) {
+  ctx.body = { name: 'new' };
 };
 
-exports.jwt = {
-  secret: 'egg_shop_1501055229355_649',
-  enable: true,
-  match: '/auth',
+// post /avatar
+exports.create = function* (ctx) {
+  ctx.body = { name: 'create' };
+};
+
+// get avatar/:id
+exports.show = function* (ctx) {
+  ctx.body = { name: 'show' };
+};
+
+// get /avatar/:id/edit
+exports.edit = function* (ctx) {
+  ctx.body = { name: 'edit' };
+};
+
+// put /avatar/:id
+exports.update = function* (ctx) {
+  ctx.body = { name: 'update' };
+};
+
+// delete /posts/:id
+exports.destroy = function* (ctx) {
+  ctx.body = { name: 'destroy' };
 };

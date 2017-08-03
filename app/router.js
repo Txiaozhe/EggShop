@@ -52,4 +52,7 @@ module.exports = app => {
   app.post('/address/default', app.jwt, 'address.setDefault');
   app.get('/address/all', app.jwt, 'address.getAll');
   app.post('/address/delete', app.jwt, 'address.delete');
+
+  // avatar
+  app.resources('avatar', '/avatar', app.controller.avatar);
 };

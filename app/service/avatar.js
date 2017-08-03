@@ -24,33 +24,17 @@
 
 /*
  * Revision History:
- *     Initial: 2017/07/29        Tang Xiaoji
+ *     Initial: 2017/08/01       Tang Xiaoji
  */
 
 'use strict';
 
-// const host_mobile = '172.20.10.2';
-const host_local = '10.0.0.164';
-
-exports.mysql = {
-  client: {
-    host: host_local,
-    port: '3306',
-    user: 'root',
-    password: '123456',
-    database: 'eggshop',
-  },
-  app: true,
-  agent: false,
-};
-
-exports.mongoose = {
-  url: 'mongodb://localhost:27017/eggshop',
-  options: {},
-};
-
-exports.jwt = {
-  secret: 'egg_shop_1501055229355_649',
-  enable: true,
-  match: '/auth',
+module.exports = app => {
+  class Avatar extends app.Service {
+    * getAll() {
+      const { ctx } = this;
+      return yield ctx.model.Avatar.create({ id: 3, avatar: 'hello' });
+    }
+  }
+  return Avatar;
 };
