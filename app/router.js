@@ -58,9 +58,12 @@ module.exports = app => {
   app.get('/goods/getAll', app.jwt, 'goods.getAll');
   app.post('/goods/modify', app.jwt, 'goods.modify');
   app.post('/goods/deleted',app.jwt,'goods.deleted');
-  app.post('/goods/banned',app.jwt,'goods.banned')
+  app.post('/goods/banned',app.jwt,'goods.banned');
 
   // avatar
   app.resources('avatar', '/avatar', app.controller.avatar);
 
+  // indent
+  app.post('/indent/cteate', app.jwt, 'indent.create');
+  app.post('/indent/bought', app.jwt, 'indent.bought')
 };
