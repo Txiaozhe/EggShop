@@ -106,6 +106,21 @@ module.exports = app => {
       }
     }
 
+    * unbanned () {
+      const { ctx } = this;
+      const { id } = ctx.request.body;
+      if (!checkParams(id)) {
+        ctx.body = newErrorWithMessage(error.ErrInvalidParams);
+        return;
+      }
+      const res = yield ctx.service.goods.unbanned(id);
+      if (res) {
+        ctx.body = newErrorWithMessage(error.ErrSucceed);
+      } else {
+        ctx.body = newErrorWithMessage(error.ErrMysql);
+      }
+    }
+
   }
   return goodsController;
 };

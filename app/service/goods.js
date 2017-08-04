@@ -74,7 +74,6 @@ module.exports = app => {
           bought: goodsInfo.bought ? goodsInfo.bought : goods.bought,
           userid: goodsInfo.userid ? goodsInfo.userid : goods.userid,
           desc: goodsInfo.address ? goodsInfo.address : goods.desc,
-          status: goodsInfo.status === 0 ? goodsInfo.status : goods.status,
           updated: now,
         });
         return res.affectedRows;
@@ -100,6 +99,18 @@ module.exports = app => {
         const res = yield modify(app, tables.goods, {
           id,
           status: goodsStatus.BANNED,
+        });
+        return res.affectedRows;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    * unbanned (id) {
+      try{
+        const res = yield modify(app, tables.goods, {
+          id,
+          status: goodsStatus.NORMAL,
         });
         return res.affectedRows;
       } catch (e) {
