@@ -48,3 +48,18 @@ CREATE TABLE IF NOT EXISTS `goods` (
     `updated` DATETIME DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE IF NOT EXISTS `indent` (
+    `id` INT(16) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `userid` INT(16) NOT NULL,
+    `goodsid` INT(16) NOT NULL,
+    `name` VARCHAR(64) NOT NULL DEFAULT '',
+    `price` DOUBLE(7, 2) NOT NULL,
+    `bought` INT(64) UNSIGNED NOT NULL,
+    `status` INT(8) DEFAULT 0,
+    `created` DATETIME NOT NULL DEFAULT current_timestamp,
+    `updated` DATETIME DEFAULT NULL,
+    `address` INT(16) UNSIGNED NOT NULL,
+    `allprice` DOUBLE(7, 2) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

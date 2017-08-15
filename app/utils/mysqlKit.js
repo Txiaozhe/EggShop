@@ -34,8 +34,8 @@ const tables = {
   userInfo: 'userinfo',
   address: 'address',
   goods: 'goods',
-
   avatar: 'avatar',
+  indent: 'indent',
 };
 
 function* create(app, tableName, payload) {
