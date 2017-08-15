@@ -24,22 +24,26 @@
 
 /*
  * Revision History:
- *     Initial: 2017/08/01       Tang Xiaoji
+ *     Initial: 2017/08/15        Tang Xiaoji
  */
 
 'use strict';
 
+const { error, newErrorWithMessage } = require('../utils/error');
+
 module.exports = app => {
-  class Avatar extends app.Service {
-    * getAll() {
+  class TestController extends app.Controller {
+    * multiQuery() {
       const { ctx } = this;
-      const res1 = yield ctx.model.Avatar.create({ id: 3, avatar: 'hello' });
-      const res2 = yield ctx.model.Avatar.create({ id: 3, test: 'this is a test' });
-      return [
-        res1,
-        res2,
-      ];
+      const res = yield ctx.service.test.multiQuery();
+      ctx.body = newErrorWithMessage(error.ErrSucceed, res);
+    }
+
+    * multiInsert() {
+      const { ctx } = this;
+      const res = yield ctx.service.test.multiInsert();
+      ctx.body = newErrorWithMessage(error.ErrSucceed, res);
     }
   }
-  return Avatar;
+  return TestController;
 };

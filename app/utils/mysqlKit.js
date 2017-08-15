@@ -34,6 +34,8 @@ const tables = {
   userInfo: 'userinfo',
   address: 'address',
   goods: 'goods',
+
+  avatar: 'avatar',
 };
 
 function* create(app, tableName, payload) {

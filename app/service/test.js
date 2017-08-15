@@ -24,22 +24,51 @@
 
 /*
  * Revision History:
- *     Initial: 2017/08/01       Tang Xiaoji
+ *     Initial: 2017/07/29        Tang Xiaoji
  */
 
 'use strict';
 
+const {
+  tables,
+} = require('../utils/mysqlKit');
+
 module.exports = app => {
-  class Avatar extends app.Service {
-    * getAll() {
-      const { ctx } = this;
-      const res1 = yield ctx.model.Avatar.create({ id: 3, avatar: 'hello' });
-      const res2 = yield ctx.model.Avatar.create({ id: 3, test: 'this is a test' });
-      return [
-        res1,
-        res2,
-      ];
+  class Test extends app.Service {
+    * multiQuery() {
+      const client1 = app.mysql.get('db1');
+      const res1 = yield client1.get(tables.user);
+
+      const client2 = app.mysql.get('db2');
+      const res2 = yield client2.get(tables.avatar);
+
+      return {
+        res: [
+          res1,
+          res2,
+        ],
+      };
+    }
+
+    * multiInsert() {
+      const client1 = app.mysql.get('db1');
+      const res1 = yield client1.insert(tables.user, {
+        nickname: "ttt3",
+        mobile: "15733204444",
+        password: "dedeedede",
+      });
+      const client2 = app.mysql.get('db2');
+      const res2 = yield client2.insert(tables.avatar, {
+        avatar: 'dhwebdjwdewjdbewkdkwedbwejdbqkjbqkwjsbqwsjqkwbsqw',
+      });
+
+      return {
+        res: [
+          res1,
+          res2,
+        ],
+      };
     }
   }
-  return Avatar;
+  return Test;
 };

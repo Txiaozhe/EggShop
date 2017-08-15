@@ -38,3 +38,12 @@ module.exports = app => {
 
   return mongo.model('avatar', AvatarSchema);
 };
+
+module.exports = app => {
+  const mongo = app.mongoose;
+  const TestSchema = new mongo.Schema({
+    id: { type: Number },
+    test: { type: String },
+  });
+  return mongo.model('test', TestSchema);
+};

@@ -57,10 +57,13 @@ module.exports = app => {
   app.post('/goods/create', app.jwt, 'goods.create');
   app.get('/goods/getAll', app.jwt, 'goods.getAll');
   app.post('/goods/modify', app.jwt, 'goods.modify');
-  app.post('/goods/deleted',app.jwt,'goods.deleted');
-  app.post('/goods/banned',app.jwt,'goods.banned')
+  app.post('/goods/deleted', app.jwt, 'goods.deleted');
+  app.post('/goods/banned', app.jwt, 'goods.banned');
 
   // avatar
   app.resources('avatar', '/avatar', app.controller.avatar);
 
+  // test
+  app.get('/test/multiQuery', 'test.multiQuery');
+  app.get('/test/multiInsert', 'test.multiInsert');
 };

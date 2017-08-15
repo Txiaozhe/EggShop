@@ -29,23 +29,29 @@
 
 'use strict';
 
-// const host_mobile = '172.20.10.2';
-const host_local = '10.0.0.164';
-
 exports.mysql = {
-  client: {
-    host: host_local,
-    port: '3306',
-    user: 'root',
-    password: '123456',
-    database: 'eggshop',
+  clients: {
+    db1: {
+      host: '127.0.0.1',
+      port: '3306',
+      user: 'root',
+      password: 'password',
+      database: 'databasename1',
+    },
+    db2: {
+      host: '127.0.0.1',
+      port: '3306',
+      user: 'root',
+      password: 'password',
+      database: 'databasename2',
+    },
   },
   app: true,
   agent: false,
 };
 
 exports.mongoose = {
-  url: 'mongodb://10.0.0.164:27017/eggshop',
+  url: 'mongodb://127.0.0.1:27017/database',
   options: {},
 };
 
