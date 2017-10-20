@@ -71,4 +71,5 @@ module.exports = app => {
   // test
   app.get('/test/multiQuery', 'test.multiQuery');
   app.get('/test/multiInsert', 'test.multiInsert');
+  app.get('/test/knex', 'test.knexTest');
 };

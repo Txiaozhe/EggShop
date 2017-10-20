@@ -24,32 +24,32 @@
 
 /*
  * Revision History:
- *     Initial: 2017/08/15        Tang Xiaoji
+ *     Initial: 2017/08/16        Tang Xiaoji
  */
 
 'use strict';
 
-const { error, newErrorWithMessage } = require('../utils/error');
+const c = require('../../config/c');
 
-module.exports = app => {
-  class TestController extends app.Controller {
-    * multiQuery() {
-      const { ctx } = this;
-      const res = yield ctx.service.test.multiQuery();
-      ctx.body = newErrorWithMessage(error.ErrSucceed, res);
-    }
+const knex = require('knex')({
+  client: 'mysql',
+  connection: { // 指明连接参数
+    host: c.mysql.host + ':3306',
+    user: c.mysql.user,
+    password: c.mysql.pass,
+    database: 'eggshop',
+  },
+  debug: true,
+  pool: {
+    min: 0,
+    max: 7,
+  },
+  acquireConnectionTimeout: 10000, // 指明连接计时器大小，默认为60000ms
+  migrations: {
+    tableName: 'migrations', // 数据库迁移，可选
+  },
+});
 
-    * multiInsert() {
-      const { ctx } = this;
-      const res = yield ctx.service.test.multiInsert();
-      ctx.body = newErrorWithMessage(error.ErrSucceed, res);
-    }
-
-    * knexTest() {
-      const { ctx } = this;
-      const res = yield ctx.service.test.knexTest();
-      ctx.body = newErrorWithMessage(error.ErrSucceed, res);
-    }
-  }
-  return TestController;
+module.exports = {
+  knex,
 };

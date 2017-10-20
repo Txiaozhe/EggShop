@@ -69,6 +69,30 @@ module.exports = app => {
         ],
       };
     }
+
+    * knexTest() {
+      const knex = require('knex')({
+        client: 'mysql',
+        connection: { // 指明连接参数
+          host: '127.0.0.1',
+          user: 'root',
+          password: '123456',
+          database: 'user',
+        },
+      });
+
+      const k = knex.schema.withSchema('user').createTableIfNotExists('knex111', function(table) {
+        table.increments();
+        table.string('name');
+        table.integer('age');
+        table.timestamps();
+      });
+
+      const results = app.mysql.get('stds');
+      console.log(results);
+
+      return results;
+    }
   }
   return Test;
 };

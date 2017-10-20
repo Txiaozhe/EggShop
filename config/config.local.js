@@ -29,21 +29,23 @@
 
 'use strict';
 
+const c = require('./c');
+
 exports.mysql = {
   clients: {
     db1: {
-      host: '127.0.0.1',
-      port: '3306',
-      user: 'root',
-      password: 'password',
-      database: 'databasename1',
+      host: c.mysql.host,
+      port: c.mysql.port,
+      user: c.mysql.user,
+      password: c.mysql.pass,
+      database: c.mysql.dbname1,
     },
     db2: {
-      host: '127.0.0.1',
-      port: '3306',
-      user: 'root',
-      password: 'password',
-      database: 'databasename2',
+      host: c.mysql.host,
+      port: c.mysql.port,
+      user: c.mysql.user,
+      password: c.mysql.pass,
+      database: c.mysql.dbname2,
     },
   },
   app: true,
@@ -51,7 +53,7 @@ exports.mysql = {
 };
 
 exports.mongoose = {
-  url: 'mongodb://127.0.0.1:27017/database',
+  url: c.mongo.host1,
   options: {},
 };
 
